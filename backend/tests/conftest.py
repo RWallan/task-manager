@@ -17,7 +17,7 @@ def client():
 def session():
     engine = create_engine(
         "sqlite:///:memory:",
-        connect_args={'check_same_thread': False},
+        connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
     Session = sessionmaker(bind=engine)
