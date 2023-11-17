@@ -65,3 +65,11 @@ def test_delete_user(session, user):
 
     assert obj_out == user
     assert not session.query(User).filter(User.id == user.id).first()
+
+
+def test_read_user_by_username(session, user):
+    obj_out = controllers.user.read_by_username(
+        session, username=user.username
+    )
+
+    assert obj_out.username == user.username
