@@ -9,14 +9,14 @@ on:
             - main
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout do código
       uses: actions/checkout@v3
-    
-    - name: Instlar Python
+
+    - name: Instalar Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11.6'
@@ -45,18 +45,14 @@ jobs:
     - name: Instalar Dependências
       run: poetry install
 
-  backend-tests:
-    runs-on: ubuntu-latest
-    needs: build
+    - name: Checando se houve alterações no backend
+      uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          backend:
+            - 'backend/**'
 
-    steps:
-        - name: Checando se houve alterações no backend
-          uses: dorny/paths-filter@v2
-          id: changes
-          with:
-            filters: |
-              backend:
-                - 'backend/**'
-
-        - if: steps.changes.outputs.backend == 'true'
-          run: cd backend/ && poetry run task test
+    - name: Testes do backend
+      if: steps.changes.outputs.backend == 'true'
+      run: cd backend/ && poetry run task test
