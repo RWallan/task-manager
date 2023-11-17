@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from backend.src.app import app
-from backend.src.database.models import Base
+from backend.src.database.models import Base, User
 
 
 @pytest.fixture
@@ -24,3 +24,13 @@ def session():
     Base.metadata.create_all(engine)
     yield Session()
     Base.metadata.drop_all(engine)
+
+
+@pytest.fixture
+def user(session):
+    user = User(username="Teste", email="teste@teste.com", password="teste")
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user
