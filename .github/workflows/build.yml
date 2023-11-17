@@ -55,4 +55,6 @@ jobs:
 
     - name: Testes do backend
       if: steps.changes.outputs.backend == 'true'
-      run: cd backend/ && poetry run task test
+      run: poetry run task test
+      env:
+        DATABASE_URL: ${{ vars.DATABASE_URL }}
