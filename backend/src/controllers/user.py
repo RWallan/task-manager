@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import EmailStr
 from sqlalchemy.orm import Session
+
 from backend.src.controllers._base import CRUDBase
 from backend.src.database.models import User
 from backend.src.schemas import UserCreate, UserUpdate
