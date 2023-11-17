@@ -45,7 +45,7 @@ pythonpath = "."
 [tool.taskipy.tasks]
 lint = "ruff . && black --check . --diff"
 format = "black . && isort ."
-backend = "uvicorn src.app:app --reload"
+backend = "uvicorn backend.src.app:app --reload"
 pre_test = "task lint"
 test = "pytest -s -x -vv"
 

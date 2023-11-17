@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
-from src.settings import Settings
+from backend.src.settings import Settings
 
 engine = create_engine(url=Settings().DATABASE_URL)
 
