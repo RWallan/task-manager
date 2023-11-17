@@ -13,6 +13,4 @@ class User(Base):
         unique=True, index=True, nullable=False
     )
     email: Mapped[str] = mapped_column(unique=True, index=True, nullable=False)
-    password: Mapped[str] = mapped_column(
-        index=True, nullable=False
-    )
+    password: Mapped[str] = mapped_column(index=True, nullable=False)
