@@ -1,0 +1,57 @@
+name: Build Workflow
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+
+    - name: Cache de instalação do Poetry
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Instalar Poetry
+      run: pip install poetry
+
+    - name: Cache das dependências
+      uses: actions/cache@v3
+      with:
+        path: |
+            ~/.cache/pypoetry
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-
+
+    - name: Instalar Dependências
+      run: poetry install
+
+  backend-tests:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+        - name: Checando se houve alterações no backend
+          uses: dorny/paths-filter@v2
+          id: changes
+          with:
+            filters: |
+              backend:
+                - 'backend/**'
+
+        - if: steps.changes.outputs.backend == 'true'
+          run: cd backend/ && poetry run task test
