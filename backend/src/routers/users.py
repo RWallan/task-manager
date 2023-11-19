@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from backend.src import controllers, schemas
 from backend.src.database.init_session import get_session
-from backend.src.exceptions import DuplicatedRegister
+from backend.src.utils.exceptions import DuplicatedRegister
 
 router = APIRouter()
 
