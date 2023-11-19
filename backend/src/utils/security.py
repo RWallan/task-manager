@@ -29,3 +29,13 @@ class JWTToken:
     @classmethod
     def decode(cls, token: str) -> dict[str, Any]:
         return jwt.decode(token, cls.SECRET_KEY, algorithms=[cls.ALGORITHM])
+
+
+class Hasher:
+    @staticmethod
+    def get_password_hash(password: str) -> str:
+        return pwd_context.hash(password)
+
+    @staticmethod
+    def verify_password(plain_password: str, hashed_password: str) -> bool:
+        return pwd_context.verify(plain_password, hashed_password)
