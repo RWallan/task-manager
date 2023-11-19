@@ -58,3 +58,5 @@ jobs:
       run: poetry run task test
       env:
         DATABASE_URL: ${{ vars.DATABASE_URL }}
+        ALGORITHM: ${{ vars.ALGORITHM }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
