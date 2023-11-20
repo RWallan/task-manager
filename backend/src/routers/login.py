@@ -24,6 +24,6 @@ def login(
             detail="E-mail ou senha incorreto.",
         )
 
-    access_token = JWTToken.encode(data={"sub": user.id})
+    access_token = JWTToken.encode(data={"sub": str(user.id)})
 
     return schemas.Token(access_token=access_token, token_type="bearer")
