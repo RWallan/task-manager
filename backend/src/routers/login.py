@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from backend.src import controllers, schemas
-from backend.src.utils.deps import OAuth2Form, Session
+from backend.src.utils.deps import CurrentUser, OAuth2Form, Session
 from backend.src.utils.security import JWTToken
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -22,6 +22,13 @@ def login(
             detail="E-mail ou senha incorreto.",
         )
 
+    access_token = JWTToken.encode(data={"sub": str(user.id)})
+
+    return schemas.Token(access_token=access_token, token_type="bearer")
+
+
+@router.post("/refresh_token", response_model=schemas.Token)
+def refresh_token(user: CurrentUser):
     access_token = JWTToken.encode(data={"sub": str(user.id)})
 
     return schemas.Token(access_token=access_token, token_type="bearer")
