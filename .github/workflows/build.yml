@@ -60,3 +60,4 @@ jobs:
         DATABASE_URL: ${{ vars.DATABASE_URL }}
         ALGORITHM: ${{ vars.ALGORITHM }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        ACCESS_TOKEN_EXPIRE_MINUTES: ${{ vars.ACCESS_TOKEN_EXPIRE_MINUTES }}
