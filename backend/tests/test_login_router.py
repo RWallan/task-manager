@@ -1,6 +1,6 @@
 def test_login_route(client, user):
     response = client.post(
-        "/login",
+        "/auth/login",
         data={"username": user.email, "password": user.clean_password},
     )
 

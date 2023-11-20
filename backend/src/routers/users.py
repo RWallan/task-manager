@@ -1,19 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, status
 
 from backend.src import controllers, schemas
-from backend.src.database.init_session import get_session
-from backend.src.database.models import User
+from backend.src.utils.deps import CurrentUser, Session
 from backend.src.utils.exceptions import DuplicatedRegister
-from backend.src.utils.security import get_current_user
 
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.post(
-    "/users/", status_code=status.HTTP_201_CREATED, response_model=schemas.User
+    "/", status_code=status.HTTP_201_CREATED, response_model=schemas.User
 )
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_session)):
+def create_user(user: schemas.UserCreate, db: Session):
     db_email = controllers.user.read_by_email(db, email=user.email)
     if db_email:
         raise DuplicatedRegister("E-mail")
@@ -28,24 +25,24 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_session)):
 
 
 @router.get(
-    "/users/", status_code=status.HTTP_200_OK, response_model=schemas.UserList
+    "/", status_code=status.HTTP_200_OK, response_model=schemas.UserList
 )
 def read_users(
+    db: Session,
     skip: int = 0,
     limit: int = 100,
-    db: Session = Depends(get_session),
 ):
     users = controllers.user.read_multiple(db, skip=skip, limit=limit)
 
     return schemas.UserList(users=users)
 
 
-@router.put("/users/{id}", response_model=schemas.User)
+@router.put("/{id}", response_model=schemas.User)
 def update_user(
     id: int,
     user: schemas.UserUpdate,
-    db: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
+    db: Session,
+    current_user: CurrentUser,
 ):
     if id != current_user.id:
         raise HTTPException(
@@ -62,11 +59,11 @@ def update_user(
     return updated_user
 
 
-@router.delete("/users/{id}", response_model=schemas.Msg)
+@router.delete("/{id}", response_model=schemas.Msg)
 def delete_user(
     id: int,
-    db: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
+    db: Session,
+    current_user: CurrentUser,
 ):
     if id != current_user.id:
         raise HTTPException(

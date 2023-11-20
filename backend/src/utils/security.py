@@ -16,7 +16,7 @@ from backend.src.utils.exceptions import CredentialsException
 from backend.src.utils.settings import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
 class JWTToken:
