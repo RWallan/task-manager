@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from backend.src.routers import user_router
+from backend.src import routers
 
 app = FastAPI()
 
@@ -10,4 +10,5 @@ def health_check():
     return {"status": "online"}
 
 
-app.include_router(user_router)
+app.include_router(routers.user_router)
+app.include_router(routers.login_router)
