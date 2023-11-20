@@ -28,9 +28,5 @@ class User(UserInDBBase):
     pass
 
 
-class UserInDB(UserInDBBase):
-    hashed_password: str
-
-
 class UserList(BaseModel):
     users: list[User]

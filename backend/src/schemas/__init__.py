@@ -1,6 +1,6 @@
 from .msg import Msg
 from .token import Token, TokenPayload
-from .user import User, UserCreate, UserInDB, UserList, UserUpdate
+from .user import User, UserCreate, UserList, UserUpdate
 
 __all__ = [
     "Msg",
@@ -8,7 +8,6 @@ __all__ = [
     "TokenPayload",
     "User",
     "UserCreate",
-    "UserInDB",
     "UserList",
     "UserUpdate",
 ]
