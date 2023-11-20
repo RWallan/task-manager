@@ -12,3 +12,4 @@ def health_check():
 
 app.include_router(routers.user_router)
 app.include_router(routers.login_router)
+app.include_router(routers.task_router)
