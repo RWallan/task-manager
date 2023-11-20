@@ -5,6 +5,7 @@ from .user import User, UserCreate, UserInDB, UserList, UserUpdate
 __all__ = [
     "Msg",
     "Token",
+    "TokenPayload",
     "User",
     "UserCreate",
     "UserInDB",

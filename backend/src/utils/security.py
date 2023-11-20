@@ -1,12 +1,22 @@
 from datetime import datetime, timedelta
 from typing import Any
 
-from jose import jwt
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 from passlib.context import CryptContext
+from pydantic import ValidationError
+from sqlalchemy.orm import Session
 
+from backend.src import controllers
+from backend.src.database.init_session import get_session
+from backend.src.database.models import User
+from backend.src.schemas import TokenPayload
+from backend.src.utils.exceptions import CredentialsException
 from backend.src.utils.settings import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 class JWTToken:
@@ -39,3 +49,22 @@ class Hasher:
     @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
+
+
+async def get_current_user(
+    session: Session = Depends(get_session),
+    token: str = Depends(oauth2_scheme),
+) -> User:
+    try:
+        payload = JWTToken.decode(token)
+
+        token_data = TokenPayload(**payload)
+    except (JWTError, ValidationError):
+        raise CredentialsException()
+
+    user = controllers.user.read_by_id(session, id=token_data.sub)
+
+    if user is None:
+        raise CredentialsException()
+
+    return user
