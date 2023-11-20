@@ -3,7 +3,9 @@ from sqlalchemy.orm import Session
 
 from backend.src import controllers, schemas
 from backend.src.database.init_session import get_session
+from backend.src.database.models import User
 from backend.src.utils.exceptions import DuplicatedRegister
+from backend.src.utils.security import get_current_user
 
 router = APIRouter()
 
@@ -43,7 +45,13 @@ def update_user(
     id: int,
     user: schemas.UserUpdate,
     db: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ):
+    if id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Sem permissão."
+        )
+
     try:
         updated_user = controllers.user.update(db, id=id, obj_in=user)
     except Exception as error:
@@ -55,7 +63,16 @@ def update_user(
 
 
 @router.delete("/users/{id}", response_model=schemas.Msg)
-def delete_user(id: int, db: Session = Depends(get_session)):
+def delete_user(
+    id: int,
+    db: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    if id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Sem permissão."
+        )
+
     try:
         _ = controllers.user.delete(db, id=id)
     except Exception as error:
