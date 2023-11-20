@@ -39,7 +39,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db_obj = self.read_by_id(db, id=id)
 
         if not db_obj:
-            raise Exception("Usuário não encontrado.")
+            raise Exception("Id não encontrado.")
 
         for field in obj_data:
             if obj_data[field]:
@@ -55,7 +55,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db_obj = self.read_by_id(db, id=id)
 
         if not db_obj:
-            raise Exception("Usuário não encontrado.")
+            raise Exception("Id não encontrado.")
 
         db.delete(db_obj)
         db.commit()
