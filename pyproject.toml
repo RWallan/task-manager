@@ -21,6 +21,8 @@ black = "^23.11.0"
 ruff = "^0.1.5"
 isort = "^5.12.0"
 ipykernel = "^6.26.0"
+factory-boy = "^3.3.0"
+freezegun = "^1.2.2"
 
 
 [tool.poetry.group.backend.dependencies]

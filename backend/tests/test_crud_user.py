@@ -73,3 +73,11 @@ def test_read_user_by_username(session, user):
     )
 
     assert obj_out.username == user.username
+
+
+def test_authenticate_user(session, user):
+    obj_out = controllers.user.authenticate(
+        session, email=user.email, password=user.clean_password
+    )
+
+    assert obj_out == user
