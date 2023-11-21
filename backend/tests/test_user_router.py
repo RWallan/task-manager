@@ -48,6 +48,22 @@ def test_update_user(client, user, token):
     }
 
 
+def test_partial_update_user(client, user, token):
+    response = client.put(
+        f"/users/{user.id}",
+        json={
+            "email": "bob@example.com",
+        },
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 200
+    assert response.json() == {
+        "username": user.username,
+        "email": "bob@example.com",
+        "id": user.id,
+    }
+
+
 def test_delete_user(client, user, token):
     response = client.delete(
         f"/users/{user.id}", headers={"Authorization": f"Bearer {token}"}
