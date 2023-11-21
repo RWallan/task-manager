@@ -6,9 +6,9 @@ from backend.src.database.models import TaskStatus
 
 
 class TaskBase(BaseModel):
-    title: Optional[str]
-    description: Optional[str]
-    state: Optional[TaskStatus]
+    title: Optional[str] = None
+    description: Optional[str] = None
+    state: Optional[TaskStatus] = None
 
 
 class TaskCreate(TaskBase):
