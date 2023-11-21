@@ -35,3 +35,6 @@ class TaskInDBBase(TaskBase):
 class Task(TaskInDBBase):
     pass
 
+
+class TaskList(BaseModel):
+    tasks: list[Task]
