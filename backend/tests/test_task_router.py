@@ -169,3 +169,26 @@ def test_update_task_with_wrong_user(session, client, token, other_user):
     )
     assert response.status_code == 401
     assert response.json() == {"detail": "Sem permissão."}
+
+
+def test_delete_todo(session, client, user, token):
+    todo = TaskFactory(id=1, user_id=user.id)
+
+    session.add(todo)
+    session.commit()
+
+    response = client.delete(
+        f"/tasks/{todo.id}", headers={"Authorization": f"Bearer {token}"}
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"msg": "Task deletada."}
+
+
+def test_delete_todo_error(client, token):
+    response = client.delete(
+        f"/tasks/{10}", headers={"Authorization": f"Bearer {token}"}
+    )
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Task não encontrada"}

@@ -64,3 +64,22 @@ def update_task(
     updated_task = controllers.task.update(session, id=task_id, obj_in=task)
 
     return updated_task
+
+
+@router.delete("/{task_id}", response_model=schemas.Msg)
+def delete_task(task_id: int, session: Session, current_user: CurrentUser):
+    to_delete_task = controllers.task.read_by_id(session, id=task_id)
+
+    if not to_delete_task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Task não encontrada"
+        )
+
+    if to_delete_task.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Sem permissão."
+        )
+
+    _ = controllers.task.delete(session, id=task_id)
+
+    return schemas.Msg(msg="Task deletada.")
