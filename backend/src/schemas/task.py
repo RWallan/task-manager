@@ -16,6 +16,14 @@ class TaskCreate(TaskBase):
     state: TaskStatus
 
 
+class TaskUpdate(TaskBase):
+    pass
+
+
+class TaskQuery(TaskBase):
+    pass
+
+
 class TaskInDBBase(TaskBase):
     id: int
     title: str
