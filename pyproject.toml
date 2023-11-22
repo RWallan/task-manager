@@ -6,9 +6,9 @@ authors = ["RWallan <3am.richardwallan@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.11.*"
+python = ">=3.11, <3.12"
 fastapi = "^0.104.1"
-uvicorn = "^0.24.0.post1"
+uvicorn = {extras = ["standard"], version = "^0.24.0.post1"}
 httpx = "^0.25.1"
 pydantic = {extras = ["email"], version = "^2.5.1"}
 pydantic-settings = "^2.1.0"
@@ -32,6 +32,11 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-multipart = "^0.0.6"
 
+
+[tool.poetry.group.frontend.dependencies]
+reactpy = "^1.0.2"
+reactpy-router = "^0.1.0"
+
 [tool.ruff]
 line-length = 79
 exclude = [".venv", "migrations"]
@@ -52,6 +57,7 @@ pythonpath = "."
 lint = "ruff . && black --check . --diff"
 format = "black . && isort ."
 backend = "uvicorn backend.src.app:app --reload"
+frontend = "uvicorn frontend.src.app:app --reload --port 5000"
 pre_test = "task lint"
 test = "pytest -s -x -vv"
 
