@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Raleway:wght@300;700&display=swap');
+@import url(App.css);
+
+:root {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+
+    --border-radius-default: 12px
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
