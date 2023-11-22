@@ -1,3 +1,4 @@
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from reactpy import component, create_context, hooks, html
 from reactpy.backend.fastapi import Options, configure
@@ -14,6 +15,7 @@ AppContext = create_context({})
 def Root(context: hooks.Context[hooks._Type]):
     router = simple.router(
         route("/", LoginPage(context)),
+        route("/register", RegisterPage(context)),
         route("*", html.h1("Missing Link 🧨")),
     )
 
